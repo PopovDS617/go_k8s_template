@@ -1,0 +1,33 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: golang-deployment
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: golang-app
+    spec:
+      containers:
+        - name: golang-app
+          image: golang-app
+          resources:
+            requests:
+              cpu: "0.5"
+            limits:
+              cpu: "1"
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: golang-svc
+spec:
+  selector:
+    app: golang-app
+  ports:
+    - protocol: TCP
+      port: 8000
